@@ -44,9 +44,16 @@
         }
     },
     "scripts": {
-        "build": "tshy",
         "dev": "bun src/cli.ts",
-        "prepublishOnly": "npm run build"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "prebuild": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+        "build": "bunx tshy",
+        "prepublishOnly": "bun run build",
+        "publish:public": "npm publish --access public",
+        "release:patch": "npm version patch && bun run publish:public",
+        "release:minor": "npm version minor && bun run publish:public",
+        "release:major": "npm version major && bun run publish:public",
+        "push-release": "git push && git push --tags"
     },
     "repository": {
         "type": "git",
