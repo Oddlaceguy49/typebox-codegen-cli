@@ -70,17 +70,51 @@ export async function runGeneration(options: {
 
 		// Your post-generation fixups
 		if (target === "zod") {
-			generatedCode = generatedCode.replace(
-				/z\.recordKATEX_INLINE_OPEN([^)]+)KATEX_INLINE_CLOSE/g,
-				"z.record(z.string(), $1)",
-			);
+			const recordRegex = /z\.record\(([^)]+)\)/g;
+			const recordReplacement = "z.record(z.string(), $1)";
+			generatedCode = generatedCode.replace(recordRegex, recordReplacement);
 		} else if (target === "yup") {
 			generatedCode = generatedCode.replace(
 				"import y from 'yup'",
 				"import * as y from 'yup'",
 			);
-		}
-		// ... add other fixups here ...
+		} else if (target === "effect") {
+			// Pass 1: Convert modern ES.Record(Key, Value) to the old object syntax.
+			// This regex handles nested parentheses in the value part.
+			const modernRecordRegex =
+				/ES\.Record\(([^,]+),\s*((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*)\)/g;
+			const modernRecordReplacement = "ES.Record({ key: $1, value: $2 })";
+			generatedCode = generatedCode.replace(
+				modernRecordRegex,
+				modernRecordReplacement,
+			);
+
+			// Pass 2: Convert simple ES.Record(Value) to the old object syntax.
+			// This regex explicitly avoids matching if the argument is an object literal '{...}'
+			// to prevent double-replacing the output from Pass 1.
+			const simpleRecordRegex = /ES\.Record\(([^){},]+)\)/g;
+			const simpleRecordReplacement =
+				"ES.Record({ key: ES.String, value: $1 })";
+			generatedCode = generatedCode.replace(
+				simpleRecordRegex,
+				simpleRecordReplacement,
+			);
+
+			// Replaces the modern @effect/schema import with the older path
+			generatedCode = generatedCode.replaceAll("@effect/schema", "effect");
+		} /*else if (target === "arktype") { // Still broken
+			console.log("\n🔧 Fixing up generated ArkType code...");
+
+			generatedCode = generatedCode.replace(
+				/^(\s*\w+\s*:\s*)('(?:\w+)'|\w+)\[\](,?)/gm,
+				"// @ts-expect-error\n$1'$2[]'$3",
+			);
+
+			generatedCode = generatedCode.replace(
+				/^(\s*\w+\s*:\s*)'(\w+\[\])'(,?)/gm,
+				"// @ts-expect-error\n$1'$2'$3",
+			);
+		}*/
 
 		const combinedOutput = `// THIS FILE IS AUTO-GENERATED FOR ${target.toUpperCase()}. DO NOT EDIT.\n\n${generatedCode}`;
 		await fs.writeFile(outputFile, combinedOutput);

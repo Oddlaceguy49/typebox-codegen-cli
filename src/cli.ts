@@ -31,8 +31,17 @@ yargs(hideBin(process.argv))
 					alias: "o",
 					type: "string",
 					describe: "Base output directory (overrides config file)",
+				})
+				.option("clean", {
+					type: "boolean",
+					describe: "Clean the output directory before generating",
+					default: true,
+				})
+				.option("fix-imports", {
+					type: "boolean",
+					describe: "Append .js extension to relative imports for ESM",
+					default: true,
 				});
-			// ... other options like --clean, --fix-imports ...
 		},
 		async (argv) => {
 			try {
@@ -88,8 +97,8 @@ yargs(hideBin(process.argv))
 								process.cwd(),
 								argv.output || task.output || config.output || "src/generated",
 							),
-							clean: true,
-							fixImports: true,
+							clean: argv.clean,
+							fixImports: argv.fixImports,
 						};
 						await runGeneration(options as any);
 					}
