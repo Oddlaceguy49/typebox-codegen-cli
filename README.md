@@ -1,6 +1,6 @@
 # Typebox Codegen CLI
 
-[![npm version](https://img.shields.io/npm/v/typebox-codegen-cli.svg?style=flat-square)](https://www.npmjs.com/package/typebox-codegen-cli)
+[![npm version](https://img.shields.io/npm/v/@oddlaceguy49/typebox-codegen-cli.svg?style=flat-square)](https://www.npmjs.com/package/typebox-codegen-cli)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
 A powerful CLI wrapper for [`typebox-codegen`](https://github.com/sinclairzx87/typebox-codegen) to automatically generate validation schemas from your TypeScript types.
