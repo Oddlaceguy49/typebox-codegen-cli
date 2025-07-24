@@ -1,0 +1,81 @@
+{
+    "name": "@oddlaceguy49/typebox-codegen-cli",
+    "version": "0.1.0",
+    "description": "A CLI for generating Zod, Yup, and other schemas from TypeScript types using typebox-codegen.",
+    "type": "module",
+    "bin": {
+        "typebox-codegen-cli": "./dist/commonjs/cli.js"
+    },
+    "main": "./dist/commonjs/cli.js",
+    "module": "./dist/esm/cli.js",
+    "types": "./dist/commonjs/cli.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/esm/cli.d.ts",
+                "default": "./dist/esm/cli.js"
+            },
+            "require": {
+                "types": "./dist/commonjs/cli.d.ts",
+                "default": "./dist/commonjs/cli.js"
+            }
+        },
+        "./config": {
+            "import": {
+                "types": "./dist/esm/config.d.ts",
+                "default": "./dist/esm/config.js"
+            },
+            "require": {
+                "types": "./dist/commonjs/config.d.ts",
+                "default": "./dist/commonjs/config.js"
+            }
+        }
+    },
+    "files": [
+        "dist"
+    ],
+    "tshy": {
+        "bin": {
+            "typebox-codegen-cli": "./src/cli.ts"
+        },
+        "exports": {
+            ".": "./src/cli.ts",
+            "./config": "./src/config.ts"
+        }
+    },
+    "scripts": {
+        "build": "tshy",
+        "dev": "bun src/cli.ts",
+        "prepublishOnly": "npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/oddlaceguy49/typebox-codegen-cli.git"
+    },
+    "keywords": [
+        "typebox",
+        "codegen",
+        "cli",
+        "zod",
+        "schema",
+        "typescript",
+        "generator",
+        "yup",
+        "valibot"
+    ],
+    "author": "Oddlaceguy49",
+    "license": "MIT",
+    "dependencies": {
+        "@sinclair/typebox-codegen": "^0.33.2",
+        "cosmiconfig": "^9.0.0",
+        "glob": "^11.0.3",
+        "ts-morph": "^22.0.0",
+        "yargs": "^17.7.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.24",
+        "@types/yargs": "^17.0.33",
+        "tshy": "^3.0.2",
+        "typescript": "^5.3.3"
+    }
+}
