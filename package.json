@@ -1,6 +1,6 @@
 {
     "name": "@oddlaceguy49/typebox-codegen-cli",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "description": "A CLI for generating Zod, Yup, and other schemas from TypeScript types using typebox-codegen.",
     "type": "module",
     "bin": {
